@@ -1,0 +1,15 @@
+{
+  "name": "LESO Life OS",
+  "short_name": "LESO",
+  "description": "Tu sistema operativo personal",
+  "start_url": "/inicio",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#C97B5D",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
