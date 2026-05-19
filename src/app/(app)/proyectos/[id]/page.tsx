@@ -1,4 +1,6 @@
-import ProjectPageClient from "./page-client";
+import dynamic from "next/dynamic";
+
+const ProjectPageClient = dynamic(() => import("./page-client"), { ssr: false });
 
 export function generateStaticParams() {
   return [{ id: '1' }];

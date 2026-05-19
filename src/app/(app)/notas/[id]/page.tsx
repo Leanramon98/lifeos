@@ -1,4 +1,6 @@
-import NotaPageClient from "./page-client";
+import dynamic from "next/dynamic";
+
+const NotaPageClient = dynamic(() => import("./page-client"), { ssr: false });
 
 export function generateStaticParams() {
   return [{ id: '1' }];

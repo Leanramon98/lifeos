@@ -1,7 +1,9 @@
-import ClientPage from "./page-client";
+import dynamic from "next/dynamic";
+
+const ClientPage = dynamic(() => import("./page-client"), { ssr: false });
 
 export function generateStaticParams() {
-  return [];
+  return [{ id: '1' }];
 }
 
 export default async function Page({ params }: { params: Promise<any> }) {
