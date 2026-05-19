@@ -1,5 +1,5 @@
 export function generateStaticParams() {
-  return [];
+  return [{ id: '1' }];
 }
 
 export default function Layout({

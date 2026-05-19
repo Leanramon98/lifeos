@@ -1,7 +1,7 @@
 import WorkspaceLayoutClient from "./layout-client";
 
 export function generateStaticParams() {
-  return [];
+  return [{ slug: '1' }];
 }
 
 export default async function Layout({

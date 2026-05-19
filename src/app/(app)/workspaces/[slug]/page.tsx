@@ -1,7 +1,7 @@
 import WorkspacePageClient from "./page-client";
 
 export function generateStaticParams() {
-  return [];
+  return [{ slug: '1' }];
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
