@@ -18,6 +18,8 @@ import { useWorkspaceDashboard } from "@/lib/hooks/useWorkspaceDashboard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { QuickAddTaskDialog } from "@/components/tasks/QuickAddTaskDialog";
+import { ProjectFormDialog } from "@/components/projects/ProjectFormDialog";
 
 export default function WorkspaceDashboardPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
@@ -31,6 +33,9 @@ export default function WorkspaceDashboardPage({ params }: { params: Promise<{ s
     isLoading, 
     updateTask 
   } = useWorkspaceDashboard(workspace?.id || '');
+
+  const [quickAddOpen, setQuickAddOpen] = React.useState(false);
+  const [projectFormOpen, setProjectFormOpen] = React.useState(false);
 
   if (!workspace) return null;
 
@@ -60,7 +65,7 @@ export default function WorkspaceDashboardPage({ params }: { params: Promise<{ s
                 <h2 className="text-lg font-bold text-foreground">Tareas activas</h2>
                 <Badge variant="secondary" className="bg-surface-elevated h-6 px-2 text-xs font-bold">{activeTasks.length}</Badge>
               </div>
-              <Button variant="ghost" size="sm" className="h-8 text-foreground-secondary hover:text-foreground">
+              <Button onClick={() => setQuickAddOpen(true)} variant="ghost" size="sm" className="h-8 text-foreground-secondary hover:text-foreground">
                 <Plus className="w-4 h-4 mr-1.5" /> Nueva tarea
               </Button>
             </header>
@@ -118,7 +123,7 @@ export default function WorkspaceDashboardPage({ params }: { params: Promise<{ s
           <section className="bg-surface border border-border rounded-2xl p-6 flex flex-col h-[400px]">
             <header className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-foreground">Proyectos</h2>
-              <Button variant="ghost" size="sm" className="h-8 text-foreground-secondary hover:text-foreground">
+              <Button onClick={() => setProjectFormOpen(true)} variant="ghost" size="sm" className="h-8 text-foreground-secondary hover:text-foreground">
                 <Plus className="w-4 h-4 mr-1.5" /> Nuevo
               </Button>
             </header>
@@ -258,6 +263,9 @@ export default function WorkspaceDashboardPage({ params }: { params: Promise<{ s
           </section>
         </div>
       </div>
+      
+      <QuickAddTaskDialog open={quickAddOpen} onOpenChange={setQuickAddOpen} defaultWorkspaceId={workspace.id} />
+      <ProjectFormDialog open={projectFormOpen} onOpenChange={setProjectFormOpen} defaultWorkspaceId={workspace.id} />
     </div>
   );
 }

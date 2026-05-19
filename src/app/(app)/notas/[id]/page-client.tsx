@@ -25,9 +25,14 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import TurndownService from "turndown";
 import { useNote } from "@/lib/hooks/useNotes";
-import { NoteEditor } from "@/components/notes/NoteEditor";
 import { extractOutline } from "@/lib/utils/note-outline";
 import { extractMentionsFromContent } from "@/lib/utils/note-mentions";
+import dynamic from "next/dynamic";
+
+const NoteEditor = dynamic(
+  () => import("@/components/notes/NoteEditor").then((mod) => mod.NoteEditor),
+  { ssr: false }
+);
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";

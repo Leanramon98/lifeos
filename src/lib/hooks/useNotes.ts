@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { onSnapshot, query, orderBy, where, doc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/lib/hooks/useAuth";
@@ -46,6 +46,7 @@ const notify = () => listeners.forEach(l => l());
 
 export function useNotes(options: any = {}) {
   const { user } = useAuth();
+  const queryClient = useQueryClient();
   const [notes, setNotes] = useState<Note[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const isMockUser = user?.uid === 'mock-user-123';
@@ -103,15 +104,36 @@ export function useNotes(options: any = {}) {
   const createNoteMutation = useMutation({
     mutationFn: (data: NoteFormData) => {
       if (isMockUser) {
+        // Find workspace details in cache
+        const workspaces = queryClient.getQueryData<any[]>(['workspaces', user?.uid]) || [];
+        const ws = workspaces.find(w => w.id === data.workspaceId);
+
+        // Find project details in cache
+        let projectName = null;
+        if (data.projectId) {
+          const projects = queryClient.getQueryData<any[]>(['projects', user?.uid]) || [];
+          const proj = projects.find(p => p.id === data.projectId);
+          if (proj) {
+            projectName = proj.name;
+          }
+        }
+
         const newNote: Note = {
           id: `mock-note-${Date.now()}`,
-          title: data.title,
+          title: data.title || 'Nueva nota',
           content: data.content || '',
+          contentText: '',
           workspaceId: data.workspaceId || null,
+          workspaceName: ws ? ws.name : null,
+          workspaceColor: ws ? ws.color : null,
+          workspaceSlug: ws ? ws.slug : null,
           projectId: data.projectId || null,
+          projectName,
           isPinned: false,
           isArchived: false,
           tags: data.tags || [],
+          wordCount: 0,
+          readingTime: 0,
           createdAt: new Date() as any,
           updatedAt: new Date() as any,
         };

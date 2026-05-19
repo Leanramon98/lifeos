@@ -132,9 +132,9 @@ export function NoteEditor({ content, onChange, editable = true }: Props) {
           char: "[[",
           items: ({ query }: { query: string }) => {
             return allNotes
-              .filter(n => n.title.toLowerCase().includes(query.toLowerCase()))
+              .filter(n => (n.title || '').toLowerCase().includes(query.toLowerCase()))
               .slice(0, 5)
-              .map(n => ({ id: n.id, label: n.title }));
+              .map(n => ({ id: n.id, label: n.title || 'Nota sin título' }));
           },
           render: () => {
             let component: any;

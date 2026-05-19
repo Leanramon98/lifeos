@@ -45,7 +45,7 @@ let mockTasks: Task[] = [
     dueDate: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) as any,
     completedAt: null,
     tags: ["UI", "Diseño"],
-    subtasksCount: { total: 0, done: 0 },
+    subtaskCounts: { total: 0, done: 0 },
     hasAttachments: false,
     order: 1,
     createdAt: new Date() as any,
@@ -67,7 +67,7 @@ let mockTasks: Task[] = [
     dueDate: new Date() as any,
     completedAt: new Date() as any,
     tags: ["Editor", "Configuración"],
-    subtasksCount: { total: 0, done: 0 },
+    subtaskCounts: { total: 0, done: 0 },
     hasAttachments: false,
     order: 2,
     createdAt: new Date() as any,
@@ -89,7 +89,7 @@ let mockTasks: Task[] = [
     dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000) as any,
     completedAt: null,
     tags: ["Anuncios", "Creativos"],
-    subtasksCount: { total: 0, done: 0 },
+    subtaskCounts: { total: 0, done: 0 },
     hasAttachments: false,
     order: 1,
     createdAt: new Date() as any,
@@ -191,15 +191,30 @@ export const useTasks = (options: UseTasksOptions = {}) => {
   const createMutation = useMutation({
     mutationFn: (data: TaskFormData) => {
       if (isMockUser) {
+        // Find workspace details in cache
+        const workspaces = queryClient.getQueryData<any[]>(['workspaces', user?.uid]) || [];
+        const ws = workspaces.find(w => w.id === data.workspaceId);
+        
+        // Find project details in cache (if any)
+        let projectName = null;
+        if (data.projectId) {
+          const projects = queryClient.getQueryData<any[]>(['projects', user?.uid]) || [];
+          const proj = projects.find(p => p.id === data.projectId);
+          if (proj) {
+            projectName = proj.name;
+          }
+        }
+
         const newTask: Task = {
           id: `mock-task-${Date.now()}`,
           ...data,
           projectId: data.projectId || null,
-          projectName: null, // would need to find it
-          workspaceName: 'Mock Workspace',
-          workspaceColor: '#4f46e5',
-          workspaceSlug: 'mock',
-          areaSlug: 'trabajo',
+          projectName,
+          workspaceId: data.workspaceId,
+          workspaceName: ws ? ws.name : 'Mock Workspace',
+          workspaceColor: ws ? ws.color : '#4f46e5',
+          workspaceSlug: ws ? ws.slug : 'mock',
+          areaSlug: ws ? ws.areaSlug : 'trabajo',
           description: data.description || '',
           status: data.status || 'todo',
           priority: data.priority || 'medium',
