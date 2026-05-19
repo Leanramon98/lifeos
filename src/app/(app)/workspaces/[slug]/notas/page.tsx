@@ -102,6 +102,3 @@ export default function WorkspaceNotasPage({ params }: { params: Promise<{ slug:
   );
 }
 
-export function generateStaticParams() {
-  return [];
-}

@@ -102,6 +102,3 @@ export default function ProjectNotasPage({ params }: { params: Promise<{ id: str
   );
 }
 
-export function generateStaticParams() {
-  return [];
-}

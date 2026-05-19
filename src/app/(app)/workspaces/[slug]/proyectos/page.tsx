@@ -320,6 +320,3 @@ const FolderGit2Icon = ({ className, ...props }: any) => (
   </svg>
 );
 
-export function generateStaticParams() {
-  return [];
-}

@@ -93,6 +93,3 @@ export default function WorkspaceTareasPage({ params }: { params: Promise<{ slug
   );
 }
 
-export function generateStaticParams() {
-  return [];
-}

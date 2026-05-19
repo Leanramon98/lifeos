@@ -263,6 +263,3 @@ export default function WorkspaceSettings({ params }: { params: Promise<{ slug: 
   );
 }
 
-export function generateStaticParams() {
-  return [];
-}

@@ -262,6 +262,3 @@ export default function WorkspaceDashboardPage({ params }: { params: Promise<{ s
   );
 }
 
-export function generateStaticParams() {
-  return [];
-}
