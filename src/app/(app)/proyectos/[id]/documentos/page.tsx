@@ -1,6 +1,9 @@
-"use client";
-import { ComingSoon } from "@/components/ui/ComingSoon";
-export default function ProjectDocumentosPage() {
-  return <ComingSoon block={5} title="Documentos del proyecto" />;
+import ClientPage from "./page-client";
+
+export function generateStaticParams() {
+  return [];
 }
 
+export default async function Page({ params }: { params: Promise<any> }) {
+  return <ClientPage params={params} />;
+}
