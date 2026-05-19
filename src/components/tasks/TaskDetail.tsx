@@ -36,7 +36,7 @@ import { useTask } from "@/lib/hooks/useTask";
 import { useWorkspaces } from "@/lib/hooks/useWorkspaces";
 import { useProjects } from "@/lib/hooks/useProjects";
 import { Task, TaskStatus, TaskPriority, Subtask, TaskUpdate } from "@/lib/types";
-import { formatRelativeDate } from "@/lib/utils/dates";
+import { formatRelativeDate, toJSDate } from "@/lib/utils/dates";
 import { MarkdownContent } from "@/components/ui/MarkdownContent";
 import { cn } from "@/lib/utils";
 
@@ -214,7 +214,7 @@ export function TaskDetail({ task: initialTask, open, onOpenChange }: Props) {
                   </Badge>
                   <Badge variant="secondary" className="flex items-center gap-1.5 py-1.5 px-3 bg-surface border border-border cursor-pointer hover:bg-surface-hover">
                     <Calendar className="w-3.5 h-3.5" />
-                    {task?.dueDate ? formatRelativeDate(new Date(task.dueDate.seconds * 1000)) : "Sin fecha"}
+                    {task?.dueDate ? formatRelativeDate(toJSDate(task.dueDate)) : "Sin fecha"}
                   </Badge>
                   {task?.tags.map(tag => (
                     <Badge key={tag} variant="outline" className="flex items-center gap-1.5 py-1.5 px-3 border-dashed hover:border-foreground-tertiary transition-colors">
@@ -370,7 +370,7 @@ export function TaskDetail({ task: initialTask, open, onOpenChange }: Props) {
                             <div className="flex items-center gap-2 mb-1">
                               <span className="text-sm font-semibold text-foreground">Lean Ramón</span>
                               <span className="text-[10px] text-foreground-tertiary uppercase">
-                                {format(upd.createdAt?.seconds ? upd.createdAt.seconds * 1000 : new Date(), "d MMM p", { locale: es })}
+                                {format(toJSDate(upd.createdAt) || new Date(), "d MMM p", { locale: es })}
                               </span>
                             </div>
                             <div className="bg-surface p-3 rounded-lg border border-border">
@@ -396,7 +396,7 @@ export function TaskDetail({ task: initialTask, open, onOpenChange }: Props) {
                             {act.meta?.from && ` de ${act.meta.from} a ${act.meta.to}`}
                           </p>
                           <p className="text-[10px] text-foreground-tertiary uppercase">
-                            {format(act.createdAt?.seconds ? act.createdAt.seconds * 1000 : new Date(), "d MMM p", { locale: es })}
+                            {format(toJSDate(act.createdAt) || new Date(), "d MMM p", { locale: es })}
                           </p>
                         </div>
                       </div>

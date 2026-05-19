@@ -18,6 +18,28 @@ import { es } from 'date-fns/locale';
 
 export type DueUrgency = 'overdue' | 'today' | 'soon' | 'future' | 'none';
 
+export const toJSDate = (dateVal: any): Date | null => {
+  if (!dateVal) return null;
+  
+  // Si ya es un objeto Date
+  if (dateVal instanceof Date) {
+    return isNaN(dateVal.getTime()) ? null : dateVal;
+  }
+  
+  // Si es un Timestamp de Firestore
+  if (typeof dateVal === 'object' && 'seconds' in dateVal) {
+    return new Date(dateVal.seconds * 1000);
+  }
+  
+  // Si viene como string o número
+  const parsed = new Date(dateVal);
+  if (!isNaN(parsed.getTime())) {
+    return parsed;
+  }
+  
+  return null;
+};
+
 export const isToday = isTodayFns;
 export const isSameDay = isSameDayFns;
 

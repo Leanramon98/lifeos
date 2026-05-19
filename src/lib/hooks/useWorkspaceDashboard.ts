@@ -6,6 +6,7 @@ import { useNotes } from './useNotes';
 import { useProjects } from './useProjects';
 import { formatDistanceToNow } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { toJSDate } from '../utils/dates';
 
 export const useWorkspaceDashboard = (workspaceId: string) => {
   const { allTasks, updateTask, isLoading: isLoadingTasks } = useTasks({ workspaceId });
@@ -45,30 +46,39 @@ export const useWorkspaceDashboard = (workspaceId: string) => {
     const activity: any[] = [];
     
     allTasks.forEach(t => {
-      activity.push({
-        id: `task-${t.id}`,
-        type: 'task',
-        title: `Tarea ${t.status === 'done' ? 'completada' : 'actualizada'}: ${t.title}`,
-        date: t.updatedAt?.seconds ? new Date(t.updatedAt.seconds * 1000) : t.updatedAt,
-      });
+      const d = toJSDate(t.updatedAt);
+      if (d) {
+        activity.push({
+          id: `task-${t.id}`,
+          type: 'task',
+          title: `Tarea ${t.status === 'done' ? 'completada' : 'actualizada'}: ${t.title}`,
+          date: d,
+        });
+      }
     });
 
     projects.forEach(p => {
-      activity.push({
-        id: `project-${p.id}`,
-        type: 'project',
-        title: `Proyecto actualizado: ${p.name}`,
-        date: p.updatedAt?.seconds ? new Date(p.updatedAt.seconds * 1000) : p.updatedAt,
-      });
+      const d = toJSDate(p.updatedAt);
+      if (d) {
+        activity.push({
+          id: `project-${p.id}`,
+          type: 'project',
+          title: `Proyecto actualizado: ${p.name}`,
+          date: d,
+        });
+      }
     });
 
     notes.forEach(n => {
-      activity.push({
-        id: `note-${n.id}`,
-        type: 'note',
-        title: `Nota editada: ${n.title || 'Sin título'}`,
-        date: n.updatedAt?.seconds ? new Date(n.updatedAt.seconds * 1000) : n.updatedAt,
-      });
+      const d = toJSDate(n.updatedAt);
+      if (d) {
+        activity.push({
+          id: `note-${n.id}`,
+          type: 'note',
+          title: `Nota editada: ${n.title || 'Sin título'}`,
+          date: d,
+        });
+      }
     });
 
     return activity

@@ -5,7 +5,7 @@ import { GripVertical, MessageSquare, Paperclip, Flag, MoreVertical, Edit2, Tras
 import { Task, TaskPriority } from "@/lib/types";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { formatRelativeDate, getDueDateUrgency, getDueDateColor } from "@/lib/utils/dates";
+import { formatRelativeDate, getDueDateUrgency, getDueDateColor, toJSDate } from "@/lib/utils/dates";
 import { cn } from "@/lib/utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
@@ -31,7 +31,7 @@ export function TaskRow({
   showProject = true 
 }: TaskRowProps) {
   const isDone = task.status === 'done';
-  const dueDate = task.dueDate ? new Date(task.dueDate.seconds * 1000) : null;
+  const dueDate = toJSDate(task.dueDate);
   const urgency = getDueDateUrgency(dueDate);
 
   const getPriorityColor = (priority: TaskPriority) => {
@@ -74,9 +74,9 @@ export function TaskRow({
           {task.title}
         </span>
 
-        {task.subtaskCounts.total > 0 && (
+        {task.subtaskCounts && task.subtaskCounts.total > 0 && (
           <span className="text-[10px] text-foreground-tertiary font-medium">
-            ({task.subtaskCounts.done}/{task.subtaskCounts.total})
+            ({task.subtaskCounts.done || 0}/{task.subtaskCounts.total})
           </span>
         )}
 

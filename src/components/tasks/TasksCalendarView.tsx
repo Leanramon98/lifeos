@@ -25,7 +25,8 @@ import {
   isInCurrentMonth, 
   formatMonthYear, 
   formatWeekRange, 
-  formatFullDay 
+  formatFullDay,
+  toJSDate
 } from "@/lib/utils/dates";
 import { QuickAddTaskDialog } from "./QuickAddTaskDialog";
 import { useTaskDragDrop } from "@/lib/hooks/useTaskDragDrop";
@@ -63,8 +64,9 @@ export function TasksCalendarView({ tasks, onTaskClick, workspaceId, projectId }
   const tasksByDay = useMemo(() => {
     const map: Record<string, Task[]> = {};
     tasks.forEach(t => {
-      if (t.dueDate) {
-        const day = new Date(t.dueDate.seconds * 1000).toISOString().split('T')[0];
+      const parsedDate = toJSDate(t.dueDate);
+      if (parsedDate) {
+        const day = parsedDate.toISOString().split('T')[0];
         if (!map[day]) map[day] = [];
         map[day].push(t);
       }

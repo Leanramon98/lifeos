@@ -8,7 +8,7 @@ import { Task } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { formatRelativeDate, getDueDateUrgency, getDueDateColor } from "@/lib/utils/dates";
+import { formatRelativeDate, getDueDateUrgency, getDueDateColor, toJSDate } from "@/lib/utils/dates";
 
 interface Props {
   task: Task;
@@ -33,9 +33,10 @@ export function BoardTaskCard({ task, onClick, showWorkspace, showProject }: Pro
     opacity: isDragging ? 0.5 : 1,
   };
 
-  const urgency = task.dueDate ? getDueDateUrgency(new Date(task.dueDate.seconds * 1000)) : 'none';
-  const subtasksCount = task.subtasksCount || 0;
-  const subtasksDone = task.subtasksDone || 0;
+  const parsedDueDate = toJSDate(task.dueDate);
+  const urgency = parsedDueDate ? getDueDateUrgency(parsedDueDate) : 'none';
+  const subtasksCount = task.subtaskCounts?.total || task.subtasksCount || 0;
+  const subtasksDone = task.subtaskCounts?.done || task.subtasksDone || 0;
 
   return (
     <div
@@ -92,10 +93,10 @@ export function BoardTaskCard({ task, onClick, showWorkspace, showProject }: Pro
 
         <div className="flex items-center justify-between mt-0.5">
           <div className="flex items-center gap-3">
-            {task.dueDate && (
+            {parsedDueDate && (
               <div className={cn("flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold border", getDueDateColor(urgency))}>
                 <Calendar className="w-3 h-3" />
-                {formatRelativeDate(new Date(task.dueDate.seconds * 1000))}
+                {formatRelativeDate(parsedDueDate)}
               </div>
             )}
             {task.tags?.length > 0 && (
