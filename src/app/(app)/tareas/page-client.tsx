@@ -38,15 +38,22 @@ export default function TareasPageClient() {
   // Filter logic (must match the logic in the Sidebar but applied to the local view)
   const filteredTasks = useMemo(() => {
     let result = tasks;
-    const f = ui.taskFilters;
+    const f = ui.taskFilters || {};
 
-    if (f.status.length > 0) result = result.filter(t => f.status.includes(t.status));
-    if (f.priority.length > 0) result = result.filter(t => f.priority.includes(t.priority));
-    if (f.areas.length > 0) result = result.filter(t => f.areas.includes(t.areaSlug));
-    if (f.workspaces.length > 0) result = result.filter(t => f.workspaces.includes(t.workspaceId));
-    if (f.projects.length > 0) result = result.filter(t => f.projects.includes(t.projectId || ''));
-    if (f.search) {
-      const q = f.search.toLowerCase();
+    const statusFilters = f.status || [];
+    const priorityFilters = f.priority || [];
+    const areasFilters = f.areas || [];
+    const workspacesFilters = f.workspaces || [];
+    const projectsFilters = f.projects || [];
+    const searchFilter = f.search || '';
+
+    if (statusFilters.length > 0) result = result.filter(t => statusFilters.includes(t.status));
+    if (priorityFilters.length > 0) result = result.filter(t => priorityFilters.includes(t.priority));
+    if (areasFilters.length > 0) result = result.filter(t => areasFilters.includes(t.areaSlug));
+    if (workspacesFilters.length > 0) result = result.filter(t => workspacesFilters.includes(t.workspaceId));
+    if (projectsFilters.length > 0) result = result.filter(t => projectsFilters.includes(t.projectId || ''));
+    if (searchFilter) {
+      const q = searchFilter.toLowerCase();
       result = result.filter(t => t.title.toLowerCase().includes(q));
     }
     

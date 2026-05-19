@@ -25,16 +25,26 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
   const { projects } = useProjects();
   const { areas } = useAreas();
 
+  // Safely extract filters with arrays fallback
+  const f = ui.taskFilters || {};
+  const statusFilters = f.status || [];
+  const priorityFilters = f.priority || [];
+  const areasFilters = f.areas || [];
+  const workspacesFilters = f.workspaces || [];
+  const projectsFilters = f.projects || [];
+  const dateRangeFilter = f.dateRange || 'all';
+  const searchFilter = f.search || '';
+
   const activeFilterCount = 
-    ui.taskFilters.status.length + 
-    ui.taskFilters.priority.length + 
-    ui.taskFilters.areas.length + 
-    (scope === 'global' ? ui.taskFilters.workspaces.length : 0) + 
-    (scope !== 'project' ? ui.taskFilters.projects.length : 0) + 
-    (ui.taskFilters.dateRange !== 'all' ? 1 : 0);
+    statusFilters.length + 
+    priorityFilters.length + 
+    areasFilters.length + 
+    (scope === 'global' ? workspacesFilters.length : 0) + 
+    (scope !== 'project' ? projectsFilters.length : 0) + 
+    (dateRangeFilter !== 'all' ? 1 : 0);
 
   const toggleFilter = (type: keyof typeof ui.taskFilters, value: any) => {
-    const current = ui.taskFilters[type] as any[];
+    const current = (ui.taskFilters?.[type] || []) as any[];
     if (current.includes(value)) {
       ui.updateTaskFilters({ [type]: current.filter(v => v !== value) });
     } else {
@@ -50,10 +60,10 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
           <Input 
             placeholder="Buscar tareas..." 
             className="pl-9 h-9"
-            value={ui.taskFilters.search}
+            value={searchFilter}
             onChange={e => ui.updateTaskFilters({ search: e.target.value })}
           />
-          {ui.taskFilters.search && (
+          {searchFilter && (
             <button 
               onClick={() => ui.updateTaskFilters({ search: "" })}
               className="absolute right-2.5 top-2.5 text-foreground-tertiary hover:text-foreground"
@@ -87,8 +97,8 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
         {/* Status Filter */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className={cn("h-8 gap-1", ui.taskFilters.status.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
-              Estado {ui.taskFilters.status.length > 0 && `(${ui.taskFilters.status.length})`}
+            <Button variant="outline" size="sm" className={cn("h-8 gap-1", statusFilters.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
+              Estado {statusFilters.length > 0 && `(${statusFilters.length})`}
               <ChevronDown className="w-3 h-3 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
@@ -96,7 +106,7 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
             {['backlog', 'todo', 'doing', 'waiting', 'done'].map((s) => (
               <DropdownMenuCheckboxItem 
                 key={s}
-                checked={ui.taskFilters.status.includes(s as TaskStatus)}
+                checked={statusFilters.includes(s as TaskStatus)}
                 onCheckedChange={() => toggleFilter('status', s)}
                 className="capitalize"
               >
@@ -109,8 +119,8 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
         {/* Priority Filter */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className={cn("h-8 gap-1", ui.taskFilters.priority.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
-              Prioridad {ui.taskFilters.priority.length > 0 && `(${ui.taskFilters.priority.length})`}
+            <Button variant="outline" size="sm" className={cn("h-8 gap-1", priorityFilters.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
+              Prioridad {priorityFilters.length > 0 && `(${priorityFilters.length})`}
               <ChevronDown className="w-3 h-3 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
@@ -118,7 +128,7 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
             {['urgent', 'high', 'medium', 'low'].map((p) => (
               <DropdownMenuCheckboxItem 
                 key={p}
-                checked={ui.taskFilters.priority.includes(p as TaskPriority)}
+                checked={priorityFilters.includes(p as TaskPriority)}
                 onCheckedChange={() => toggleFilter('priority', p)}
                 className="capitalize"
               >
@@ -131,8 +141,8 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
         {scope === 'global' && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className={cn("h-8 gap-1", ui.taskFilters.areas.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
-                Área {ui.taskFilters.areas.length > 0 && `(${ui.taskFilters.areas.length})`}
+              <Button variant="outline" size="sm" className={cn("h-8 gap-1", areasFilters.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
+                Área {areasFilters.length > 0 && `(${areasFilters.length})`}
                 <ChevronDown className="w-3 h-3 opacity-50" />
               </Button>
             </DropdownMenuTrigger>
@@ -140,7 +150,7 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
               {areas.map((a) => (
                 <DropdownMenuCheckboxItem 
                   key={a.id}
-                  checked={ui.taskFilters.areas.includes(a.slug)}
+                  checked={areasFilters.includes(a.slug)}
                   onCheckedChange={() => toggleFilter('areas', a.slug)}
                 >
                   {a.name}
@@ -153,8 +163,8 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
         {scope === 'global' && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className={cn("h-8 gap-1", ui.taskFilters.workspaces.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
-                Workspace {ui.taskFilters.workspaces.length > 0 && `(${ui.taskFilters.workspaces.length})`}
+              <Button variant="outline" size="sm" className={cn("h-8 gap-1", workspacesFilters.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
+                Workspace {workspacesFilters.length > 0 && `(${workspacesFilters.length})`}
                 <ChevronDown className="w-3 h-3 opacity-50" />
               </Button>
             </DropdownMenuTrigger>
@@ -162,7 +172,7 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
               {workspaces.map((w) => (
                 <DropdownMenuCheckboxItem 
                   key={w.id}
-                  checked={ui.taskFilters.workspaces.includes(w.id)}
+                  checked={workspacesFilters.includes(w.id)}
                   onCheckedChange={() => toggleFilter('workspaces', w.id)}
                 >
                   <div className="flex items-center gap-2">
@@ -178,8 +188,8 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
         {scope !== 'project' && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className={cn("h-8 gap-1", ui.taskFilters.projects.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
-                Proyecto {ui.taskFilters.projects.length > 0 && `(${ui.taskFilters.projects.length})`}
+              <Button variant="outline" size="sm" className={cn("h-8 gap-1", projectsFilters.length > 0 && "bg-primary/5 border-primary/50 text-primary")}>
+                Proyecto {projectsFilters.length > 0 && `(${projectsFilters.length})`}
                 <ChevronDown className="w-3 h-3 opacity-50" />
               </Button>
             </DropdownMenuTrigger>
@@ -187,7 +197,7 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
               {projects.filter(p => !workspaceId || p.workspaceId === workspaceId).map((p) => (
                 <DropdownMenuCheckboxItem 
                   key={p.id}
-                  checked={ui.taskFilters.projects.includes(p.id)}
+                  checked={projectsFilters.includes(p.id)}
                   onCheckedChange={() => toggleFilter('projects', p.id)}
                 >
                   {p.name}
@@ -199,8 +209,8 @@ export function TasksFiltersBar({ scope, workspaceId, projectId }: Props) {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className={cn("h-8 gap-1", ui.taskFilters.dateRange !== 'all' && "bg-primary/5 border-primary/50 text-primary")}>
-              Fecha {ui.taskFilters.dateRange !== 'all' && `: ${ui.taskFilters.dateRange}`}
+            <Button variant="outline" size="sm" className={cn("h-8 gap-1", dateRangeFilter !== 'all' && "bg-primary/5 border-primary/50 text-primary")}>
+              Fecha {dateRangeFilter !== 'all' && `: ${dateRangeFilter}`}
               <ChevronDown className="w-3 h-3 opacity-50" />
             </Button>
           </DropdownMenuTrigger>

@@ -88,6 +88,17 @@ export const useUIStore = create<UIState>()(
         taskFilters: state.taskFilters,
         recentCommandItems: state.recentCommandItems 
       }), // No persistir isCommandPaletteOpen
+      merge: (persistedState: any, currentState: any) => {
+        if (!persistedState) return currentState;
+        return {
+          ...currentState,
+          ...persistedState,
+          taskFilters: {
+            ...currentState.taskFilters,
+            ...(persistedState.taskFilters || {})
+          }
+        };
+      }
     }
   )
 );

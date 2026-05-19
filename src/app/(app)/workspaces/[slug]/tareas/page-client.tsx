@@ -34,13 +34,18 @@ export default function WorkspaceTareasPage({ params }: { params: Promise<{ slug
 
   const filteredTasks = useMemo(() => {
     let result = tasks;
-    const f = ui.taskFilters;
+    const f = ui.taskFilters || {};
 
-    if (f.status.length > 0) result = result.filter(t => f.status.includes(t.status));
-    if (f.priority.length > 0) result = result.filter(t => f.priority.includes(t.priority));
-    if (f.projects.length > 0) result = result.filter(t => f.projects.includes(t.projectId || ''));
-    if (f.search) {
-      const q = f.search.toLowerCase();
+    const statusFilters = f.status || [];
+    const priorityFilters = f.priority || [];
+    const projectsFilters = f.projects || [];
+    const searchFilter = f.search || '';
+
+    if (statusFilters.length > 0) result = result.filter(t => statusFilters.includes(t.status));
+    if (priorityFilters.length > 0) result = result.filter(t => priorityFilters.includes(t.priority));
+    if (projectsFilters.length > 0) result = result.filter(t => projectsFilters.includes(t.projectId || ''));
+    if (searchFilter) {
+      const q = searchFilter.toLowerCase();
       result = result.filter(t => t.title.toLowerCase().includes(q));
     }
     
