@@ -101,3 +101,7 @@ export default function ProjectNotasPage({ params }: { params: Promise<{ id: str
     </div>
   );
 }
+
+export function generateStaticParams() {
+  return [];
+}

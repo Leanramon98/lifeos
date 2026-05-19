@@ -312,3 +312,7 @@ export default function NotaPage({ params }: { params: Promise<{ id: string }> }
     </div>
   );
 }
+
+export function generateStaticParams() {
+  return [];
+}

@@ -83,3 +83,7 @@ export default function ProjectTareasPage({ params }: { params: Promise<{ id: st
     </div>
   );
 }
+
+export function generateStaticParams() {
+  return [];
+}

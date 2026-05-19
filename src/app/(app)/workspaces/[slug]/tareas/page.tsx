@@ -92,3 +92,7 @@ export default function WorkspaceTareasPage({ params }: { params: Promise<{ slug
     </div>
   );
 }
+
+export function generateStaticParams() {
+  return [];
+}

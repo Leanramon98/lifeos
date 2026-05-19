@@ -261,3 +261,7 @@ export default function WorkspaceDashboardPage({ params }: { params: Promise<{ s
     </div>
   );
 }
+
+export function generateStaticParams() {
+  return [];
+}
