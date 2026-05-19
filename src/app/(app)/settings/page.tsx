@@ -110,7 +110,7 @@ export default function SettingsPage() {
       // Actualizamos los order en batch
       newOrder.forEach((w, index) => {
         if (w.order !== index) {
-          updateWorkspace(w.id, { order: index });
+          updateWorkspace({ id: w.id, data: { order: index } });
         }
       });
     }

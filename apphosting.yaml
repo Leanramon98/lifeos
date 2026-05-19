@@ -1,0 +1,19 @@
+# apphosting.yaml
+# Configuration for Firebase App Hosting
+# See https://firebase.google.com/docs/app-hosting/configure for details.
+
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_API_KEY
+    value: "AIzaSyBPeAS1Oa7v6kfm0n8iHdl-bZEg5BwgTxY"
+  - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
+    value: "lifeos-30ed8.firebaseapp.com"
+  - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
+    value: "lifeos-30ed8"
+  - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+    value: "lifeos-30ed8.firebasestorage.app"
+  - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
+    value: "688942316629"
+  - variable: NEXT_PUBLIC_FIREBASE_APP_ID
+    value: "1:688942316629:web:d5a40a1bfef33fb5aae8dc"
+  - variable: NEXT_PUBLIC_USE_FIREBASE_EMULATOR
+    value: "false"

@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNotes } from "@/lib/hooks/useNotes";
-import { useProject } from "@/lib/hooks/useProject";
+import { useProject } from "@/lib/hooks/useProjects";
 import { NoteCard } from "@/components/notes/NoteCard";
 import { cn } from "@/lib/utils";
 

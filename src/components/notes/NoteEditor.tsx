@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useMemo } from "react";
-import { useEditor, EditorContent, BubbleMenu, ReactRenderer } from "@tiptap/react";
+import { useEditor, EditorContent, ReactRenderer } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import TaskList from "@tiptap/extension-task-list";

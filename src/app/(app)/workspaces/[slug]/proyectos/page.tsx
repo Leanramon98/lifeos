@@ -80,7 +80,6 @@ export default function WorkspaceProyectosPage({ params }: { params: Promise<{ s
     projects: fetchedProjects, 
     updateProject, 
     archiveProject, 
-    unarchiveProject, 
     deleteProject,
     reorderProjects
   } = useProjects({ 
@@ -259,7 +258,7 @@ export default function WorkspaceProyectosPage({ params }: { params: Promise<{ s
                       viewMode={viewMode}
                       onEdit={openForm}
                       onArchive={archiveProject}
-                      onUnarchive={unarchiveProject}
+                      onUnarchive={(id) => updateProject({ id, data: { status: 'active' }})}
                       onDelete={deleteProject}
                       onChangeStatus={(id: string, status: any) => updateProject({ id, data: { status }})}
                     />
@@ -281,7 +280,7 @@ export default function WorkspaceProyectosPage({ params }: { params: Promise<{ s
                   showWorkspaceChip={false}
                   onEdit={openForm}
                   onArchive={archiveProject}
-                  onUnarchive={unarchiveProject}
+                  onUnarchive={(id) => updateProject({ id, data: { status: 'active' }})}
                   onDelete={deleteProject}
                   onChangeStatus={(id, status) => updateProject({ id, data: { status }})}
                 />

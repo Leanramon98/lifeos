@@ -4,7 +4,7 @@ import React, { useState, useMemo, use } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTasks } from "@/lib/hooks/useTasks";
-import { useProject } from "@/lib/hooks/useProject";
+import { useProject } from "@/lib/hooks/useProjects";
 import { useUIStore } from "@/lib/store/useUIStore";
 import { TasksFiltersBar } from "@/components/tasks/TasksFiltersBar";
 import { TasksViewSwitcher } from "@/components/tasks/TasksViewSwitcher";

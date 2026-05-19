@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 export default function ProyectosPage() {
   const { areas } = useAreas();
   const { workspaces } = useWorkspaces();
-  const { projects, updateProject, archiveProject, unarchiveProject, deleteProject } = useProjects({ includeArchived: true });
+  const { projects, updateProject, archiveProject, deleteProject } = useProjects({ includeArchived: true });
   
   const [formOpen, setFormOpen] = useState(false);
   const [projectToEdit, setProjectToEdit] = useState<Project | undefined>();
@@ -200,7 +200,7 @@ export default function ProyectosPage() {
                 viewMode={viewMode}
                 onEdit={openForm}
                 onArchive={archiveProject}
-                onUnarchive={unarchiveProject}
+                onUnarchive={(id) => updateProject({ id, data: { status: 'active' }})}
                 onDelete={deleteProject}
                 onChangeStatus={(id, status) => updateProject({ id, data: { status }})}
               />
