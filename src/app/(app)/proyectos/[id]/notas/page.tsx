@@ -1,6 +1,4 @@
-import dynamic from "next/dynamic";
-
-const ClientPage = dynamic(() => import("./page-client"), { ssr: false });
+import ClientPage from "./page-client";
 
 export function generateStaticParams() {
   return [{ id: '1' }];

@@ -1,6 +1,4 @@
-import dynamic from "next/dynamic";
-
-const TareasPageClient = dynamic(() => import("./page-client"), { ssr: false });
+import TareasPageClient from "./page-client";
 
 export default function Page() {
   return <TareasPageClient />;

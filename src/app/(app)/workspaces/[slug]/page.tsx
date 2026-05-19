@@ -1,6 +1,4 @@
-import dynamic from "next/dynamic";
-
-const WorkspacePageClient = dynamic(() => import("./page-client"), { ssr: false });
+import WorkspacePageClient from "./page-client";
 
 export function generateStaticParams() {
   return [{ slug: '1' }];
