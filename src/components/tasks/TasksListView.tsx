@@ -35,19 +35,21 @@ export function TasksListView({ tasks, onTaskClick, onToggleTask, onDeleteTask, 
         let color = undefined;
 
         if (by === 'status') {
-          key = task.status;
-          title = statusConfig[task.status].label;
-          icon = <TaskStatusIcon status={task.status} />;
+          const status = task.status || 'todo';
+          key = status;
+          title = statusConfig[status]?.label || 'Por hacer';
+          icon = <TaskStatusIcon status={status} />;
         } else if (by === 'workspace') {
-          key = task.workspaceId;
-          title = task.workspaceName;
+          key = task.workspaceId || 'no-workspace';
+          title = task.workspaceName || 'Sin espacio de trabajo';
           color = task.workspaceColor;
         } else if (by === 'project') {
           key = task.projectId || 'no-project';
           title = task.projectName || 'Sin proyecto';
         } else if (by === 'priority') {
-          key = task.priority;
-          title = task.priority.charAt(0).toUpperCase() + task.priority.slice(1);
+          const priority = task.priority || 'medium';
+          key = priority;
+          title = priority.charAt(0).toUpperCase() + priority.slice(1);
         }
 
         if (!groups[key]) {

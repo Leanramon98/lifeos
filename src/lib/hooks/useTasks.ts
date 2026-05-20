@@ -142,7 +142,17 @@ export const useTasks = (options: UseTasksOptions = {}) => {
     const q = query(getTasksRef(user.uid), ...constraints);
     
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Task));
+      const data = snapshot.docs.map(doc => {
+        const d = doc.data();
+        return {
+          id: doc.id,
+          ...d,
+          status: d.status || 'todo',
+          priority: d.priority || 'medium',
+          tags: Array.isArray(d.tags) ? d.tags : [],
+          subtaskCounts: d.subtaskCounts || { total: 0, done: 0 }
+        } as Task;
+      });
       queryClient.setQueryData(['tasks', user.uid, options.workspaceId, options.projectId], data);
       setIsLoadingSnapshot(false);
     }, (err) => {

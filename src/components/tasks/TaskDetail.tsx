@@ -216,7 +216,7 @@ export function TaskDetail({ task: initialTask, open, onOpenChange }: Props) {
                     <Calendar className="w-3.5 h-3.5" />
                     {task?.dueDate ? formatRelativeDate(toJSDate(task.dueDate)) : "Sin fecha"}
                   </Badge>
-                  {task?.tags.map(tag => (
+                  {(task?.tags || []).map(tag => (
                     <Badge key={tag} variant="outline" className="flex items-center gap-1.5 py-1.5 px-3 border-dashed hover:border-foreground-tertiary transition-colors">
                       <Tag className="w-3.5 h-3.5" />
                       {tag}
